@@ -1,0 +1,61 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.iso
+*.jar
+*.rar
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# large Tensorflow files #
+##########################
+*.h5
+*.npy
+*.pb
+*.index
+*.data*
+**/training_checkpoints
+**/log
+**/logs
+**/.ipynb_checkpoints
+**/image_decoder
+**/spectra_decoder
+**/tool_encoder
+**/image_spectra_encoder
+**/autoencoder
+**/images
+**/saved_model
+*Flourocarbon_tool*
+*Flourocarbon_auto*
+*latents_generator*
+*loss.csv
+*autoencoder_*
+*tool_log*
+settings.json
+*.pyc
