@@ -1,4 +1,4 @@
-# Generative modelling for  optical plasma diagnostics
+# Data-driven plasma modelling: Surrogate collisional radiative models of fluorocarbon plasmas from deep generative autoencoders
 
 ## Authors - Gregory A Daly $^{1*, 2}$, Jonathan E Fieldsend $^1$, Geoff Hassall $^2$ and Gavin A Tabor $^1$
 
