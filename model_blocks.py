@@ -37,20 +37,14 @@ class LayerScale(layers.Layer):
         self.init_values = init_values
         self.projection_dim = projection_dim
 
-#     @tf.function
     def build(self, input_shape):
         self.gamma = tf.Variable(
             self.init_values * tf.ones((self.projection_dim,))
         )
 
-#     @tf.function
     def call(self, x):
         return tf.cast(x, tf.float32) * self.gamma
 
-    # def call(self, x):
-    #     return x * self.gamma
-
-#     @tf.function
     def get_config(self):
         config = super().get_config()
         config.update(
@@ -61,39 +55,37 @@ class LayerScale(layers.Layer):
         )
         return config
 
-# class StochasticDepth(layers.Layer):
-#     """Stochastic Depth module.
-#     It performs batch-wise dropping rather than sample-wise. In libraries like
-#     `timm`, it's similar to `DropPath` layers that drops residual paths
-#     sample-wise.
-#     References:
-#       - https://github.com/rwightman/pytorch-image-models
-#     Args:
-#       drop_path_rate (float): Probability of dropping paths. Should be within
-#         [0, 1].
-#     Returns:
-#       Tensor either with the residual path dropped or kept.
-#     """
+class StochasticDepth(layers.Layer):
+    """Stochastic Depth module.
+    It performs batch-wise dropping rather than sample-wise. In libraries like
+    `timm`, it's similar to `DropPath` layers that drops residual paths
+    sample-wise.
+    References:
+      - https://github.com/rwightman/pytorch-image-models
+    Args:
+      drop_path_rate (float): Probability of dropping paths. Should be within
+        [0, 1].
+    Returns:
+      Tensor either with the residual path dropped or kept.
+    """
 
-#     def __init__(self, drop_path_rate, **kwargs):
-#         super().__init__(**kwargs)
-#         self.drop_path_rate = drop_path_rate
+    def __init__(self, drop_path_rate, **kwargs):
+        super().__init__(**kwargs)
+        self.drop_path_rate = drop_path_rate
 
-# #     @tf.function
-#     def call(self, x, training=None):
-#         if training:
-#             keep_prob = 1 - self.drop_path_rate
-#             shape = (tf.shape(x)[0],) + ((tf.rank(x) - 1),)
-#             random_tensor = keep_prob + tf.random.uniform(shape, 0, 1)
-#             random_tensor = tf.floor(random_tensor)
-#             return (x / keep_prob) * random_tensor
-#         return x
+    def call(self, x, training=None):
+        if training:
+            keep_prob = 1 - self.drop_path_rate
+            shape = (tf.shape(x)[0],) + ((tf.rank(x) - 1),)
+            random_tensor = keep_prob + tf.random.uniform(shape, 0, 1)
+            random_tensor = tf.floor(random_tensor)
+            return (x / keep_prob) * random_tensor
+        return x
 
-# #     @tf.function
-#     def get_config(self):
-#         config = super().get_config()
-#         config.update({"drop_path_rate": self.drop_path_rate})
-#         return config
+    def get_config(self):
+        config = super().get_config()
+        config.update({"drop_path_rate": self.drop_path_rate})
+        return config
 
 def downsample_layer1D(filters, block_number):
     def apply(x):
@@ -124,8 +116,7 @@ def downsample_layer2D(filters, block_number):
                 )(x)
         return x
     return apply
-
-# @tf.function
+  
 def upsample_layer1D(filters, block_number):
     def apply(x):
         x = LayerNormalization(
@@ -202,18 +193,12 @@ def ConvNeXTBlock1D(filters_spec, drop_path_rate=0.0, layer_scale_init_value=1e-
               name=name + "_layer_scale",
             )(x)
         if drop_path_rate:
-#             layer = StochasticDepth(
-#               drop_path_rate, name=name + "_stochastic_depth"
-#             )
             
             output = tfa.layers.StochasticDepth(drop_path_rate, name=name + "_stochastic_depth")([inputs, x])
         else:
             layer = layers.Activation("linear", name=name + "_identity")
             output = Add()([inputs, layer(x)])
         
-        
-
-#         return Add()([inputs, layer(x)])
         return output
 
     return apply
@@ -264,18 +249,12 @@ def ConvNeXTBlock2D(filters_spec, drop_path_rate=0.0, layer_scale_init_value=1e-
               name=name + "_layer_scale",
             )(x)
         if drop_path_rate:
-#             layer = StochasticDepth(
-#               drop_path_rate, name=name + "_stochastic_depth"
-#             )
             
             output = tfa.layers.StochasticDepth(drop_path_rate, name=name + "_stochastic_depth")([inputs, x])
         else:
             layer = layers.Activation("linear", name=name + "_identity")
             output = Add()([inputs, layer(x)])
-        
-        
 
-#         return Add()([inputs, layer(x)])
         return output
 
     return apply
