@@ -482,7 +482,7 @@ for latent_norm in ['ln']: # ['ln', 'bn']
 
             callbacks_list = [tensorboard_callback, cp_callback, term]
 
-            # if finetuning a model, pre-load the the weights and apply, uncommend and ammend the path to your original trained model
+            # if finetuning a model, pre-load the the weights and apply, uncomment and ammend the path to your original trained model
 
             # autoencoder_pre_trained = tf.keras.models.load_model('/saved_model/path_to_your_trained_model', compile=False)
 
@@ -502,7 +502,7 @@ for latent_norm in ['ln']: # ['ln', 'bn']
             spectra_decoder_model.save('saved_model/f_ar_o2_spectra_decoder_ConvNext-vT_repeat_' + str(repeat) + '_mse_bn_latent='+str(latent_units)+'_batch_size='+str(batch_size)+'_initial_lr='+str(initial_learning_rate)+'latent_reg='+str(reg_latent)+'latent_norm='+latent_norm)
             image_decoder_model.save('saved_model/f_ar_o2_image_decoder_ConvNext-vT_repeat_' + str(repeat) + '_mse_bn_latent='+str(latent_units)+'_batch_size='+str(batch_size)+'_initial_lr='+str(initial_learning_rate)+'latent_reg='+str(reg_latent)+'latent_norm='+latent_norm)
             
-            # when running in a loop, you can sometime encounter memory leaks from improperly cleared tf graphs in gpu memory. Sometimes this helps to stop that, no guarantees.
+            # when running in a loop, you can encounter memory leaks from improperly cleared tf graphs in gpu memory. Sometimes this helps to stop that, no guarantees.
 
             try:
 
