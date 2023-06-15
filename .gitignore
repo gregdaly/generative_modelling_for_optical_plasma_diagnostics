@@ -59,3 +59,8 @@ Thumbs.db
 *tool_log*
 settings.json
 *.pyc
+*zenodo*
+
+*Copy*
+
+*.csv

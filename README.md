@@ -2,7 +2,7 @@
 
 ## Authors - Gregory A Daly $^{1*, 2}$, Jonathan E Fieldsend $^1$, Geoff Hassall $^2$ and Gavin A Tabor $^1$
 
-$^1$ College of Engineering, Mathematics and Physical Sciences, Harrison Building, Streatham Campus, University of Exeter, North Park Road, Exeter, UK, EX4 4QF
+$^1$ Faculty of Environment, Science and Economy, Harrison Building, Streatham Campus, University of Exeter, North Park Road, Exeter, UK, EX4 4QF
 $^2$ Oxford Instruments Plasma Technology, North End, Yatton, BS49 4AP, UK
 
 *daly.gregory@gmail.com
