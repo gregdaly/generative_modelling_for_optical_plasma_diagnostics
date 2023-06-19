@@ -9,4 +9,6 @@ $^2$ Oxford Instruments Plasma Technology, North End, Yatton, BS49 4AP, UK
 
 This repository contains the trained models and model code for the autoencoder models described in our paper [under review].
 
-A short jupyter notebook demonstrating how to use the [generative half of the model](generative_decoder_demo.ipynb). The model requires tensorflow to be installed on your system, please refer to the [Tensorflow install instructions](https://www.tensorflow.org/install/pip) for detailed instructions for your OS and GPU.
+A short jupyter notebook is included demonstrating how to use the [generative half of the model](generative_decoder_demo.ipynb). The model requires tensorflow to be installed on your system, please refer to the [Tensorflow install instructions](https://www.tensorflow.org/install/pip) for detailed instructions for your OS and GPU.
+
+### You can also try out [the notebook on Colab](https://colab.research.google.com/github/gregdaly/generative_modelling_for_optical_plasma_diagnostics/blob/master/generative_decoder_demo.ipynb)
