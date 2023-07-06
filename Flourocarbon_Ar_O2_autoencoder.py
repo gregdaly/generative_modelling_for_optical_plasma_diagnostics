@@ -80,7 +80,7 @@ if gpus:
 
 # If you have stored the underlying dataset a different drive please ammend the path
 
-path = Path('flourocarbon_data_set/')
+path = Path('/storage/scratch_1/AEDatav2/flourocarbon_data_set/')
 
 list_ds_train = tf.data.Dataset.list_files(str(path/'data_in_files_2nd_split/train_paired*'), shuffle=False)
 list_ds_train = list_ds_train.shuffle(tf.data.experimental.cardinality(list_ds_train).numpy(), reshuffle_each_iteration=False)
@@ -129,11 +129,11 @@ warmup_steps = int(warmup_epoch * batch_size / len(gpus))
 dense_units_encoder = 32
 dense_units_decoder = 32
 
-latent_units = 32
+# latent_units = 32
 
 activation_fn = tf.nn.swish
 
-initial_learning_rate = 1e-3
+initial_learning_rate = 2.5e-4
 weight_decay = 0.005
 
 drop_path_rate = 0
@@ -156,7 +156,7 @@ bias_initializer = tf.keras.initializers.Zeros()
 
 mirrored_strategy = tf.distribute.MirroredStrategy(devices=["/gpu:0", "/gpu:1", "/gpu:2", "/gpu:3"])
 
-latent_units = 64
+latent_units = 128
 
 reg_latent = 1e-4
 
@@ -164,9 +164,9 @@ for latent_norm in ['ln']: # ['ln', 'bn']
 
     # on your own dataset, you may wish to test different initial learning rates and number of latent units, these are important hyperparameters
 
-    for initial_learning_rate in [5e-4]:
+    for initial_learning_rate in [1e-4]:
 
-        for latent_units in [64]:
+        for latent_units in [latent_units]:
 
             repeat = 1
         # for repeat in range (1):
@@ -463,10 +463,10 @@ for latent_norm in ['ln']: # ['ln', 'bn']
                 # autoencoder.summary()
 
             now = datetime.datetime.now().strftime("%Y%m%d")
-            logdir = os.path.join("logs/Image+Spectra_f_ar_o2_ConvNext-vT_2nd_split_fine_tune_autoencoder_" + now, datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+ 'repeat_' + str(repeat) +'initial_lr='+str(initial_learning_rate)+'latent_reg='+str(reg_latent)+'_latent='+str(latent_units)+'_batch_size='+str(batch_size)+'latent_norm='+latent_norm)
+            logdir = os.path.join("logs/Image+Spectra_f_ar_o2_ConvNext-vT_autoencoder_" + now, datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+ 'repeat_' + str(repeat) +'initial_lr='+str(initial_learning_rate)+'latent_reg='+str(reg_latent)+'_latent='+str(latent_units)+'_batch_size='+str(batch_size)+'latent_norm='+latent_norm)
             tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir = logdir, histogram_freq=1, profile_batch=0, update_freq = 'epoch')
 
-            checkpoint_path = ('training_checkpoints/Image+Spectra_f_ar_o2_ConvNext-vT_2nd_split_fine_tune_autoencoder_repeat_' + str(repeat) +'initial_lr='+str(initial_learning_rate)+'latent_reg='+str(reg_latent) + '_bn_latent='+str(latent_units)+'_batch_size='+str(batch_size)+'latent_norm='+latent_norm + now + '/epoch_val {epoch:02d}-{val_loss:.2f} .ckpt')
+            checkpoint_path = ('training_checkpoints/Image+Spectra_f_ar_o2_ConvNext-vT_autoencoder_repeat_' + str(repeat) +'initial_lr='+str(initial_learning_rate)+'latent_reg='+str(reg_latent) + '_bn_latent='+str(latent_units)+'_batch_size='+str(batch_size)+'latent_norm='+latent_norm + now + '/epoch_val {epoch:02d}-{val_loss:.2f} .ckpt')
             
             checkpoint_dir = os.path.dirname(checkpoint_path)
 
@@ -484,13 +484,13 @@ for latent_norm in ['ln']: # ['ln', 'bn']
 
             # if finetuning a model, pre-load the the weights and apply, uncomment and ammend the path to your original trained model
 
-            # autoencoder_pre_trained = tf.keras.models.load_model('/saved_model/path_to_your_trained_model', compile=False)
+            autoencoder_pre_trained = tf.keras.models.load_model('/home/greg/generative_modelling_for_optical_plasma_diagnostics/saved_model/f_ar_o2_image_spectra_autoencoder_ConvNext-vT_repeat_1_mse_bn_latent=128_batch_size=2048_initial_lr=0.00025latent_reg=0.0001latent_norm=ln', compile=False)
 
-            # autoencoder.set_weights(autoencoder_pre_trained.get_weights())
+            autoencoder.set_weights(autoencoder_pre_trained.get_weights())
 
-            # assert len(autoencoder_pre_trained.weights) == len(autoencoder.weights)
-            # for a, b in zip(autoencoder_pre_trained.weights, autoencoder.weights):
-            #     np.testing.assert_allclose(a.numpy(), b.numpy())
+            assert len(autoencoder_pre_trained.weights) == len(autoencoder.weights)
+            for a, b in zip(autoencoder_pre_trained.weights, autoencoder.weights):
+                np.testing.assert_allclose(a.numpy(), b.numpy())
 
             history = autoencoder.fit(list_ds_train,
                     validation_data=list_ds_val,
