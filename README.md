@@ -7,7 +7,7 @@ $^2$ Oxford Instruments Plasma Technology, North End, Yatton, BS49 4AP, UK
 
 *daly.gregory@gmail.com
 
-This repository contains the trained models and model code for the autoencoder models described in our paper [under review].
+This repository contains the trained models and model code for the autoencoder models described in our [paper](https://iopscience.iop.org/article/10.1088/2632-2153/aced7f).
 
 A short jupyter notebook is included demonstrating how to use the [generative half of the model](generative_decoder_demo.ipynb). The model requires tensorflow to be installed on your system, please refer to the [Tensorflow install instructions](https://www.tensorflow.org/install/pip) for detailed instructions for your OS and GPU.
 
